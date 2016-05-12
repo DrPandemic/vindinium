@@ -7,7 +7,7 @@ module.exports = function (grunt) {
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
   grunt.registerTask('default', ['build', 'watch']);
-  grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'stylus']);
+  grunt.registerTask('build', ['browserify', 'uglify', 'stylus']);
 
   // Project configuration.
   grunt.initConfig({

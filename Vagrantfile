@@ -22,7 +22,8 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 9000, host: 8080
+  config.vm.network "forwarded_port", guest: 3000, host: 8081
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -43,13 +44,13 @@ Vagrant.configure(2) do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
+  config.vm.provider "virtualbox" do |vb|
   #   # Display the VirtualBox GUI when booting the machine
   #   vb.gui = true
   #
-  #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
-  # end
+  # Customize the amount of memory on the VM:
+      vb.memory = "4096"
+  end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -65,20 +66,25 @@ Vagrant.configure(2) do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+    echo "deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.2.list
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv EA312927
     sudo apt-get update
+
     sudo apt-get install -y git
     sudo apt-get install -y mongodb-org
-    sudo apt-get install -y openjdk-8-jdk
+    sudo apt-get install -y openjdk-7-jdk
 
     mkdir /home/vagrant/bin
     cd /home/vagrant/bin
     wget https://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.11/sbt-launch.jar
     echo "#!/bin/bash" > sbt
-    echo -e "SBT_OPTS=\"-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M\"" >> sbt
-    echo -e "java $SBT_OPTS -jar `dirname $0`/sbt-launch.jar \"$@\"" >> sbt
+    echo 'SBT_OPTS=\"-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M\"' >> sbt
+    echo 'java $SBT_OPTS -jar /home/vagrant/bin/sbt-launch.jar \"$@\"' >> sbt
     sudo chmod u+x sbt
+    sudo chown vagrant:vagrant sbt
+    sudo chown vagrant:vagrant sbt-launch.jr
 
-    curl -sL https://deb.nodesource.com/setup_5.x | sudo -E bash -
     sudo apt-get install -y nodejs
+    sudo apt-get install -y npm
   SHELL
 end
