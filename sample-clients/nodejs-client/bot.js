@@ -1,25 +1,27 @@
-var open = require("open");
+"use strict";
 
-var MapUtils = require('./map');
-var Types = require('./types');
+const open = require("open");
 
-var directions = ["north", "south", "east", "west", "stay"];
-var first = true;
+const MapUtils = require('./map');
+const Types = require('./types');
+
+const directions = ["north", "south", "east", "west", "stay"];
+let first = true;
 function bot(state, callback) {
-    if (first) {
-        console.log('Open Browser at ' + state.viewUrl);
-        open(state.viewUrl);
-        first = false;
-    }
+  if (first) {
+    console.log('Open Browser at ' + state.viewUrl);
+    open(state.viewUrl);
+    first = false;
+  }
 
-    var map = MapUtils.parseBoard(state.game.board);
-    var dir = directions[Math.floor(Math.random() * directions.length)];
-    console.log(dir);
+  const map = MapUtils.parseBoard(state.game.board);
+  const dir = directions[Math.floor(Math.random() * directions.length)];
+  console.log(dir);
 
-    callback(null, dir);
+  callback(null, dir);
 };
 
 
 module.exports = bot;
 if (require.main === module)
-    require('./client/index').cli(bot);
+  require('./client/index').cli(bot);
