@@ -4,6 +4,7 @@ import akka.pattern.ask
 import com.coveo.blitz.server._
 import com.coveo.blitz.server.system.Replay
 import com.coveo.blitz.server.user.{User => U}
+import play.api.Play.current
 import play.api.data.Forms._
 import play.api.data._
 import play.api.libs.EventSource
@@ -17,6 +18,8 @@ import scala.concurrent.{Await, Future}
 
 object User extends Controller {
 
+  val API_KEY = play.api.Play.configuration.getString("vindinium.api-key").getOrElse("")
+
   private val form = Form(single(
     "name" -> text
       .verifying("Name is too short", _.size >= 3)
@@ -24,17 +27,17 @@ object User extends Controller {
       .verifying("Name already taken", name => Await.result(U freeName name, 1 second))
   ))
 
-  def registerForm = Action { req =>
-    Ok(views.html.user.register(form))
-  }
-
-  def register = Action.async { implicit req =>
-    form.bindFromRequest.fold(
-      err => Future successful BadRequest(views.html.user.register(err)),
-      name => U make name map { user =>
-        Ok(views.html.user.postRegister(user))
-      }
-    )
+  def register(apiKey: Option[String]) = Action.async { implicit req =>
+    apiKey match {
+      case Some(API_KEY) => {
+        form.bindFromRequest.fold(
+          err => Future successful BadRequest,
+          name => U make name map { user =>
+            Ok(views.html.user.postRegister(user))
+          }
+        )
+      } case _ => Future successful unauthorized
+    }
   }
 
   private implicit val timeout = akka.util.Timeout(1.second)
