@@ -3,7 +3,7 @@ package com.coveo.blitz.client;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.coveo.blitz.client.bot.RandomBot;
+import com.coveo.blitz.client.bot.Bot;
 import com.coveo.blitz.client.bot.SimpleBotRunner;
 import com.coveo.blitz.client.dto.ApiKey;
 import com.google.api.client.http.GenericUrl;
@@ -42,7 +42,7 @@ public class Main
             gameUrl = new GameUrl(arena, gameId);
         }
 
-        SimpleBotRunner runner = new SimpleBotRunner(new ApiKey(key), gameUrl, new RandomBot());
+        SimpleBotRunner runner = new SimpleBotRunner(new ApiKey(key), gameUrl, new Bot());
         runner.call();
     }
 
@@ -51,7 +51,7 @@ public class Main
      */
     public static class GameUrl extends GenericUrl
     {
-        private final static String BASE_URL = "http://blitz2016.xyz:8080";
+        private final static String BASE_URL = "http://localhost:9000";
 
         private final static String TRAINING_URL = BASE_URL + "/api/training";
         private final static String COMPETITION_URL = BASE_URL + "/api/arena";
