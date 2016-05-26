@@ -28,6 +28,7 @@ class Game:
         self.state = state
         self.board = Board(state['game']['board'])
         self.heroes = [Hero(state['game']['heroes'][i]) for i in range(len(state['game']['heroes']))]
+        self.hero = self.heroes[int(state['hero']['id']) - 1]
         self.mines_locs = {}
         self.heroes_locs = {}
         self.taverns_locs = set([])
@@ -75,8 +76,8 @@ class Board:
 
     def passable(self, loc):
         'true if can walk through'
-        x, y = loc
-        pos = self.tiles[x][y]
+        row, col = loc
+        pos = self.tiles[row][col]
         return (pos != WALL) and (pos != TAVERN) and not isinstance(pos, MineTile)
 
     def to(self, loc, direction):
@@ -85,10 +86,10 @@ class Board:
         d_row, d_col = AIM[direction]
         n_row = row + d_row
         if (n_row < 0): n_row = 0
-        if (n_row > self.size): n_row = self.size
+        if (n_row >= self.size): n_row = self.size - 1
         n_col = col + d_col
         if (n_col < 0): n_col = 0
-        if (n_col > self.size): n_col = self.size
+        if (n_col >= self.size): n_col = self.size - 1
 
         return (n_row, n_col)
 
@@ -96,8 +97,8 @@ class Board:
 
 class Hero:
     def __init__(self, hero):
+        self.id = hero['id']
         self.name = hero['name']
-        self.pos = hero['pos']
+        self.pos = (int(hero['pos']['x']), int(hero['pos']['y']))
         self.life = hero['life']
         self.gold = hero['gold']
-
