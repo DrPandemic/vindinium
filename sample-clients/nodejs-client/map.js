@@ -53,10 +53,21 @@ exports.parseBoard = function (board) {
         var chr = tiles.slice(strIdx, strIdx + 2);
         var type = getType(chr[0], chr[1]);
 
-        map[x][y] = type;
+        var tile = {}
+        tile.type = type
+        tile.x = x;
+        tile.y = y;
+
+        if (type == Types.Mine) {
+            tile.owner = chr[1];
+        } else if (type == Types.Player) {
+            tile.player = chr[1];
+        }
+
+        map[x][y] = tile;
 
         y++;
-        if (y >= size) {
+        if (y >= size && x < size - 1) {
             y = 0;
             x++;
             map[x] = [];
