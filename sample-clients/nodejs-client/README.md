@@ -33,4 +33,7 @@ The map parsing is already done for you. Feel free to modify it if you need to.
  
 The files in the **client** folder shouldn't be modified. If you do modify them, we won't be responsible of what happens.  
 
+Gotchas:
+- `x` represents `ROWS`, `y` reprensents `COLUMNS`. Yes, it's counter-intuitive.
+
 Have fun!
