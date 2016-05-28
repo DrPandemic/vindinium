@@ -6,7 +6,7 @@ import requests
 from bot import Bot
 
 TIMEOUT = 15
-BASE_URL = "http://localhost:9000"
+BASE_URL = "dinf-jdis-ia.dinf.fsci.usherbrooke.ca:80"
 
 
 def get_new_game_state(session, server_url, key, mode='training', game_id=""):

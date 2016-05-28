@@ -23,7 +23,7 @@ namespace Coveo
                 return;
             }
 
-            string serverURL = "http://localhost:9000";
+            string serverURL = "http://dinf-jdis-ia.dinf.fsci.usherbrooke.ca:80";
             string gameId = args.Length == 3 ? args[2] : null;
 
             SimpleBotRunner runner = new SimpleBotRunner(

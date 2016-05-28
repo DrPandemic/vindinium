@@ -51,7 +51,7 @@ public class Main
      */
     public static class GameUrl extends GenericUrl
     {
-        private final static String BASE_URL = "http://localhost:9000";
+        private final static String BASE_URL = "http://dinf-jdis-ia.dinf.fsci.usherbrooke.ca:80";
 
         private final static String TRAINING_URL = BASE_URL + "/api/training";
         private final static String COMPETITION_URL = BASE_URL + "/api/arena";
