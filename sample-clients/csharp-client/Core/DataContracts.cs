@@ -83,6 +83,42 @@ namespace CoveoBlitz
 
         [DataMember]
         public int y;
+
+		public Pos(int x, int y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+        
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            
+            Pos p = obj as Pos;
+            if ((System.Object)p == null) return false;
+
+            return (x == p.x) && (y == p.y);
+        }
+
+        public bool Equals(Pos p)
+        {
+            if ((object)p == null) return false;
+
+            return (x == p.x) && (y == p.y);
+        }
+
+		public override string ToString ()
+		{
+			return "( " + x.ToString () + ", " + y.ToString () + " )";
+		}
+
+		public override int GetHashCode ()
+		{
+			int hash = 13;
+			hash = (hash * 7) + x.GetHashCode ();
+			hash = (hash * 7) + y.GetHashCode ();
+			return hash;
+		}
     }
 
     [DataContract]

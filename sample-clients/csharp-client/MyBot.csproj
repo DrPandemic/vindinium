@@ -62,7 +62,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Core\GameState.cs" />
     <Compile Include="Core\ISimpleBot.cs" />
-    <Compile Include="Bot\RandomBot.cs" />
+    <Compile Include="Bot\Bot.cs" />
+    <Compile Include="Bot\Pathfinder.cs" />
     <Compile Include="Core\ApiToolkit.cs" />
     <Compile Include="Core\SimpleBotRunner.cs" />
   </ItemGroup>

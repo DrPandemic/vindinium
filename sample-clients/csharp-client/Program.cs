@@ -1,7 +1,7 @@
 ﻿// Copyright (c) 2005-2016, Coveo Solutions Inc.
 
 using CoveoBlitz;
-using CoveoBlitz.RandomBot;
+using CoveoBlitz.Bot;
 using System;
 
 namespace Coveo
@@ -23,12 +23,12 @@ namespace Coveo
                 return;
             }
 
-            string serverURL = "http://blitz2016.xyz:8080";
+            string serverURL = "http://localhost:9000";
             string gameId = args.Length == 3 ? args[2] : null;
 
             SimpleBotRunner runner = new SimpleBotRunner(
                 new ApiToolkit(serverURL, args[0], args[1] == "training", gameId),
-                new RandomBot());
+                new Bot());
 
             runner.Run();
 
