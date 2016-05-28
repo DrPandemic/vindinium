@@ -30,18 +30,18 @@ namespace CoveoBlitz.Bot
         /// <returns></returns>
         public string Move(GameState state)
         {
-			var pathfinder = new Pathfinder (state.board);
-			var mines = new List<Pos> ();
-			for (int x = 0; x < state.board.Length; x++) {
-				for (int y = 0; y < state.board [x].Length; y++) {
-					if (state.board [x] [y] == Tile.GOLD_MINE_NEUTRAL) {
-						mines.Add (new Pos(x, y));
-					}
-				}
-			}
-			var closest = mines.OrderBy (mine => pathfinder.ShortestPath (state.myHero.pos, mine).Count).First();
+            var pathfinder = new Pathfinder (state.board);
+            var mines = new List<Pos> ();
+            for (int x = 0; x < state.board.Length; x++) {
+                for (int y = 0; y < state.board [x].Length; y++) {
+                    if (state.board [x] [y] == Tile.GOLD_MINE_NEUTRAL) {
+                        mines.Add (new Pos(x, y));
+                    }
+                }
+            }
+            var closest = mines.OrderBy (mine => pathfinder.ShortestPath (state.myHero.pos, mine).Count).First();
 
-			string direction = pathfinder.NavigateTowards (state.myHero.pos, closest);
+            string direction = pathfinder.NavigateTowards (state.myHero.pos, closest);
 
             Console.WriteLine("Completed turn {0}, going {1}", state.currentTurn, direction);
             return direction;

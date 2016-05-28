@@ -24,11 +24,11 @@ namespace CoveoBlitz
         public bool errored { get; set; }
 
         public ApiToolkit(string serverURL,
-            string key,
-            bool trainingMode,
-            string gameId,
-            uint turns = 25,
-            string map = null)
+                          string key,
+                          bool trainingMode,
+                          string gameId,
+                          uint turns = 25,
+                          string map = null)
         {
             this.botKey = key;
             this.uri = serverURL + (trainingMode ? TRAINING_URL : ARENA_URL);
@@ -78,11 +78,11 @@ namespace CoveoBlitz
 
             return new GameState() {
                 myHero = gameResponse.hero,
-                heroes = gameResponse.game.heroes,
-                currentTurn = gameResponse.game.turn,
-                maxTurns = gameResponse.game.maxTurns,
-                finished = gameResponse.game.finished,
-                board = createBoard(gameResponse.game.board.size, gameResponse.game.board.tiles)
+                       heroes = gameResponse.game.heroes,
+                       currentTurn = gameResponse.game.turn,
+                       maxTurns = gameResponse.game.maxTurns,
+                       finished = gameResponse.game.finished,
+                       board = createBoard(gameResponse.game.board.size, gameResponse.game.board.tiles)
             };
         }
 
@@ -107,7 +107,7 @@ namespace CoveoBlitz
         }
 
         private Tile[][] createBoard(int size,
-            string data)
+                                     string data)
         {
             Tile[][] board = new Tile[size][];
 

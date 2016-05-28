@@ -7,7 +7,7 @@ namespace CoveoBlitz.Bot
     public class Pathfinder
     {
         private Tile[][] Board;
-        
+
         /// <summary>
         /// Creates a pathfinder.
         /// </summary>
@@ -15,16 +15,7 @@ namespace CoveoBlitz.Bot
         {
             Board = board;
         }
-        
-        /**
-     * Finds the shortest path from 'source' to 'destination' and returns the
-     * direction to take a single step towards that path.
-     *
-     * @param source source location (row, column) (e.g. location of your hero)
-     * @param destination destination location (row, column) (e.g. location of a
-     * mine)
-     * @return direction to take to follow the optimal path
-     */
+
         /// <summary>
         /// Finds the shortest path from 'source' to 'destination' and returns the
         /// direction to take a single step towards that path.
@@ -34,12 +25,11 @@ namespace CoveoBlitz.Bot
         public string NavigateTowards(Pos source, Pos destination)
         {
             var path = ShortestPath(source, destination);
-			Console.WriteLine (source + " -> " + destination + " = ");
-			path.ToList().ForEach(i => Console.Write("{0}\t", i));
-			if (path.Count > 0) return DirectionTowards(source, path[0]);
+            path.ToList().ForEach(i => Console.Write("{0}\t", i));
+            if (path.Count > 0) return DirectionTowards(source, path[0]);
             return Direction.Stay;
         }
-        
+
         /// <summary>
         /// Finds the shortest path from 'source' to 'destination' and returns the
         /// sequence of positions to follow to take the optimal path (excluding source,
@@ -51,52 +41,52 @@ namespace CoveoBlitz.Bot
         {
             var nodes = new HashSet<Pos>();
             nodes.Add(source);
-            
+
             var distances = new Dictionary<Pos, int>();
             distances.Add(source, 0);
-            
+
             var predecessors = new Dictionary<Pos, Pos>();
-            
+
             while (nodes.Count > 0) {
                 Pos u = nodes.OrderBy(n => distances[n]).First();
                 nodes.Remove(u);
-                
+
                 var neighbors = GetNeighbors(u);
-                
+
                 if (neighbors.Contains(destination)) {
                     predecessors.Add(destination, u);
-					Console.WriteLine ("DONE");
+                    Console.WriteLine ("DONE");
                     break;
                 }
-                
+
                 foreach (var v in neighbors) {
                     if (IsPassable(v) && !distances.ContainsKey(v)) {
-						distances.Add (v, distances [u] + 1);
+                        distances.Add (v, distances [u] + 1);
                         predecessors.Add(v, u);
                         nodes.Add(v);
                     }
                 }
             }
 
-			return BuildPath (destination, predecessors);
+            return BuildPath (destination, predecessors);
         }
 
-		private IList<Pos> BuildPath(Pos destination, IDictionary<Pos, Pos> predecessors)
-		{
-			var path = new List<Pos> ();
-			var n = destination;
+        private IList<Pos> BuildPath(Pos destination, IDictionary<Pos, Pos> predecessors)
+        {
+            var path = new List<Pos> ();
+            var n = destination;
 
-			while (predecessors.ContainsKey (n)) {
-				Console.WriteLine (n);
-				path.Add (n);
-				n = predecessors [n];
-			}
+            while (predecessors.ContainsKey (n)) {
+                Console.WriteLine (n);
+                path.Add (n);
+                n = predecessors [n];
+            }
 
-			path.Reverse ();
+            path.Reverse ();
 
-			return path;
-		}
-        
+            return path;
+        }
+
         private string DirectionTowards(Pos src, Pos dst)
         {
             if (src.x > dst.x) return Direction.North;
@@ -105,15 +95,15 @@ namespace CoveoBlitz.Bot
             if (src.y < dst.y) return Direction.East;
             return Direction.Stay;
         }
-        
+
         private bool IsPassable(Pos p)
         {
             var tile = Board[p.x][p.y];
-			return tile == Tile.FREE || tile == Tile.SPIKES ||
-				tile == Tile.HERO_1 || tile == Tile.HERO_2 ||
-				tile == Tile.HERO_3 || tile == Tile.HERO_4;
+            return tile == Tile.FREE || tile == Tile.SPIKES ||
+                tile == Tile.HERO_1 || tile == Tile.HERO_2 ||
+                tile == Tile.HERO_3 || tile == Tile.HERO_4;
         }
-        
+
         private IList<Pos> GetNeighbors(Pos p)
         {
             var neighbors = new List<Pos>();
