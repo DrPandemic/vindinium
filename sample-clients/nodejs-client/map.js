@@ -53,7 +53,7 @@ exports.parseBoard = function (board) {
         var chr = tiles.slice(strIdx, strIdx + 2);
         var type = getType(chr[0], chr[1]);
 
-        var tile = {}
+        var tile = {};
         tile.type = type
         tile.x = x;
         tile.y = y;
