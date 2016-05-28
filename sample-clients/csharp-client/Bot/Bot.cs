@@ -1,15 +1,17 @@
 ﻿// Copyright (c) 2005-2016, Coveo Solutions Inc.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace CoveoBlitz.RandomBot
+namespace CoveoBlitz.Bot
 {
     /// <summary>
-    /// RandomBot
+    /// Bot
     ///
-    /// This bot will randomly chose a direction each turns.
+    /// This bot controls your player.
     /// </summary>
-    public class RandomBot : ISimpleBot
+    public class Bot : ISimpleBot
     {
         private readonly Random random = new Random();
 
@@ -28,29 +30,18 @@ namespace CoveoBlitz.RandomBot
         /// <returns></returns>
         public string Move(GameState state)
         {
-            string direction;
-
-            switch (random.Next(0, 5)) {
-                case 0:
-                    direction = Direction.East;
-                    break;
-
-                case 1:
-                    direction = Direction.West;
-                    break;
-
-                case 2:
-                    direction = Direction.North;
-                    break;
-
-                case 3:
-                    direction = Direction.South;
-                    break;
-
-                default:
-                    direction = Direction.Stay;
-                    break;
+            var pathfinder = new Pathfinder (state.board);
+            var mines = new List<Pos> ();
+            for (int x = 0; x < state.board.Length; x++) {
+                for (int y = 0; y < state.board [x].Length; y++) {
+                    if (state.board [x] [y] == Tile.GOLD_MINE_NEUTRAL) {
+                        mines.Add (new Pos(x, y));
+                    }
+                }
             }
+            var closest = mines.OrderBy (mine => pathfinder.ShortestPath (state.myHero.pos, mine).Count).First();
+
+            string direction = pathfinder.NavigateTowards (state.myHero.pos, closest);
 
             Console.WriteLine("Completed turn {0}, going {1}", state.currentTurn, direction);
             return direction;

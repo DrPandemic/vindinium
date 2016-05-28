@@ -46,8 +46,8 @@ namespace CoveoBlitz
                 // Opens up a game view
                 if (showGame) {
                     new Thread(delegate() {
-                        System.Diagnostics.Process.Start(api.viewURL);
-                    }).Start();
+                               System.Diagnostics.Process.Start(api.viewURL);
+                               }).Start();
                 }
 
                 // While the game is running, we ask the bot for his next move and
